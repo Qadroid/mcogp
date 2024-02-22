@@ -1,6 +1,6 @@
 'use client';
 
-import { CustomerField, DeploymentForm } from '@/app/lib/definitions';
+import { CustomerField, InvoiceForm } from '@/app/lib/definitions';
 import {
   CheckIcon,
   ClockIcon,
@@ -9,19 +9,19 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
-import { updateDeployment } from '@/app/lib/actions';
+import { updateInvoice } from '@/app/lib/actions';
 
 
-export default function EditDeploymentForm({
-  deployment,
+export default function EditInvoiceForm({
+  invoice,
   customers,
 }: {
-  deployment: DeploymentForm;
+  invoice: InvoiceForm;
   customers: CustomerField[];
 }) {
   const initialState = { message: null, errors: {} };
-  const updateDeploymentWithId = updateDeployment.bind(null, deployment.id);
-  const [state, dispatch] = useFormState(updateDeploymentWithId, initialState);
+  const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
+  const [state, dispatch] = useFormState(updateInvoiceWithId, initialState);
  
   return <form action={dispatch}></form>;
 }

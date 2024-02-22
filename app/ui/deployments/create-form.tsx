@@ -10,7 +10,7 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { createDeployment } from '@/app/lib/actions';
+import { createInvoice } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
 
 
@@ -18,7 +18,7 @@ import { useFormState } from 'react-dom';
 export default function Form({ customers }: { customers: CustomerField[] }) {
   const initialState = { message: null, errors: {} };
 
-  const [state, dispatch] = useFormState(createDeployment, initialState);
+  const [state, dispatch] = useFormState(createInvoice, initialState);
 
   return (
     <form action={dispatch}>
@@ -57,7 +57,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           </div>
         </div>
 
-        {/* Deployment Amount */}
+        {/* Invoice Amount */}
         <div className="mb-4">
           <label htmlFor="amount" className="mb-2 block text-sm font-medium">
             Choose an amount
@@ -78,10 +78,10 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           </div>
         </div>
 
-        {/* Deployment Status */}
+        {/* Invoice Status */}
         <fieldset>
           <legend className="mb-2 block text-sm font-medium">
-            Set the deployment status
+            Set the invoice status
           </legend>
           <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
             <div className="flex gap-4">
@@ -121,12 +121,12 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/dashboard/deployments"
+          href="/dashboard/invoices"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Cancel
         </Link>
-        <Button type="submit">Create Deployment</Button>
+        <Button type="submit">Create Invoice</Button>
       </div>
     </form>
   );

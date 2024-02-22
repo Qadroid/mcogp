@@ -72,7 +72,7 @@ const customers = [
   },
 ];
 
-const deployments = [
+const invoices = [
   {
     customer_id: customers[0].id,
     amount: 15795,
@@ -183,6 +183,6 @@ const revenue = [
 module.exports = {
   users,
   customers,
-  deployments,
+  invoices,
   revenue,
 };

@@ -17,13 +17,13 @@ const FormSchema = z.object({
         .number()
         .gt(0, { message: 'Please enter an amount greater than $0.' }),
     status: z.enum(['pending', 'paid'],  {   
-        invalid_type_error: 'Please select an deployment status.',
+        invalid_type_error: 'Please select an invoice status.',
 }),
     date: z.string(),
   });
 
-  const UpdateDeployment = FormSchema.omit({ id: true, date: true });
-  const CreateDeployment = FormSchema.omit({ id: true, date: true });
+  const UpdateInvoice = FormSchema.omit({ id: true, date: true });
+  const CreateInvoice = FormSchema.omit({ id: true, date: true });
 
   export type State = {
     errors?: {
@@ -34,9 +34,9 @@ const FormSchema = z.object({
     message?: string | null;
   };
    
-  export async function createDeployment(prevState: State, formData: FormData) {
+  export async function createInvoice(prevState: State, formData: FormData) {
     // Validate form using Zod
-    const validatedFields = CreateDeployment.safeParse({
+    const validatedFields = CreateInvoice.safeParse({
       customerId: formData.get('customerId'),
       amount: formData.get('amount'),
       status: formData.get('status'),
@@ -46,7 +46,7 @@ const FormSchema = z.object({
     if (!validatedFields.success) {
       return {
         errors: validatedFields.error.flatten().fieldErrors,
-        message: 'Missing Fields. Failed to Create Deployment.',
+        message: 'Missing Fields. Failed to Create Invoice.',
       };
     }
    
@@ -58,27 +58,27 @@ const FormSchema = z.object({
     // Insert data into the database
     try {
       await sql`
-        INSERT INTO deployments (customer_id, amount, status, date)
+        INSERT INTO invoices (customer_id, amount, status, date)
         VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
       `;
     } catch (error) {
       // If a database error occurs, return a more specific error.
       return {
-        message: 'Database Error: Failed to Create Deployment.',
+        message: 'Database Error: Failed to Create Invoice.',
       };
     }
    
-    // Revalidate the cache for the deployments page and redirect the user.
-    revalidatePath('/dashboard/deployments');
-    redirect('/dashboard/deployments');
+    // Revalidate the cache for the invoices page and redirect the user.
+    revalidatePath('/dashboard/invoices');
+    redirect('/dashboard/invoices');
   }
 
-  export async function updateDeployment(
+  export async function updateInvoice(
     id: string,
     prevState: State,
     formData: FormData,
   ) {
-    const validatedFields = UpdateDeployment.safeParse({
+    const validatedFields = UpdateInvoice.safeParse({
       customerId: formData.get('customerId'),
       amount: formData.get('amount'),
       status: formData.get('status'),
@@ -87,7 +87,7 @@ const FormSchema = z.object({
     if (!validatedFields.success) {
       return {
         errors: validatedFields.error.flatten().fieldErrors,
-        message: 'Missing Fields. Failed to Update Deployment.',
+        message: 'Missing Fields. Failed to Update Invoice.',
       };
     }
    
@@ -96,25 +96,25 @@ const FormSchema = z.object({
    
     try {
       await sql`
-        UPDATE deployments
+        UPDATE invoices
         SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
         WHERE id = ${id}
       `;
     } catch (error) {
-      return { message: 'Database Error: Failed to Update Deployment.' };
+      return { message: 'Database Error: Failed to Update Invoice.' };
     }
    
-    revalidatePath('/dashboard/deployments');
-    redirect('/dashboard/deployments');
+    revalidatePath('/dashboard/invoices');
+    redirect('/dashboard/invoices');
   }
 
-  export async function deleteDeployment(id: string) {
+  export async function deleteInvoice(id: string) {
     try {
-      await sql`DELETE FROM deployments WHERE id = ${id}`;
-      revalidatePath('/dashboard/deployments');
-      return { message: 'Deleted Deployment.' };
+      await sql`DELETE FROM invoices WHERE id = ${id}`;
+      revalidatePath('/dashboard/invoices');
+      return { message: 'Deleted Invoice.' };
     } catch (error) {
-      return { message: 'Database Error: Failed to Delete Deployment.' };
+      return { message: 'Database Error: Failed to Delete Invoice.' };
     }
   }
 

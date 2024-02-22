@@ -3,7 +3,7 @@ import LoginForm from '@/app/ui/login-form'
 ;import { Metadata } from 'next';
  
 export const metadata: Metadata = {
-  title: 'Deployments | Acme Dashboard',
+  title: 'Invoices | Acme Dashboard',
 };
  
 export default function LoginPage() {

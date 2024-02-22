@@ -1,20 +1,20 @@
 import { Card } from '@/app/ui/dashboard/cards';
 import RevenueChart from '@/app/ui/dashboard/revenue-chart';
-import LatestDeployments from '@/app/ui/dashboard/latest-deployments';
+import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 import { lusitana } from '@/app/ui/fonts';
-import { fetchLatestDeployments, fetchCardData } from '@/app/lib/data'; 
+import { fetchLatestInvoices, fetchCardData } from '@/app/lib/data'; 
 import { Suspense } from 'react';
-import { RevenueChartSkeleton, LatestDeploymentsSkeleton } from '@/app/ui/skeletons';
+import { RevenueChartSkeleton, LatestInvoicesSkeleton } from '@/app/ui/skeletons';
 import { fetchRevenue } from '@/app/lib/data';
 
 export default async function Page() {
   const revenue = await fetchRevenue();
-  const latestDeployments = await fetchLatestDeployments();
+  const latestInvoices = await fetchLatestInvoices();
   const {
-      numberOfDeployments,
+      numberOfInvoices,
       numberOfCustomers,
-      totalPaidDeployments,
-      totalPendingDeployments,
+      totalPaidInvoices,
+      totalPendingInvoices,
     } = await fetchCardData();
 
   return (
@@ -23,9 +23,9 @@ export default async function Page() {
         Dashboard
       </h1>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Card title="Collected" value={totalPaidDeployments} type="collected" />
-        <Card title="Pending" value={totalPendingDeployments} type="pending" />
-        <Card title="Total Deployments" value={numberOfDeployments} type="deployments" />
+        <Card title="Collected" value={totalPaidInvoices} type="collected" />
+        <Card title="Pending" value={totalPendingInvoices} type="pending" />
+        <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
         <Card
           title="Total Customers"
           value={numberOfCustomers}
@@ -36,7 +36,7 @@ export default async function Page() {
       <Suspense fallback={<RevenueChartSkeleton />}>
           <RevenueChart />
         </Suspense>
-        <LatestDeployments latestDeployments={latestDeployments} />
+        <LatestInvoices latestInvoices={latestInvoices} />
       </div>
     </main>
   );
